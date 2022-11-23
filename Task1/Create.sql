@@ -1,44 +1,21 @@
-CREATE TABLE Osoby (
+CREATE TABLE Person (
     Id int NOT NULL IDENTITY(1,1) PRIMARY KEY,
-    Imie varchar(255),
-    Nazwisko varchar(255),
-    Pesel varchar(255),
-    Data_urodzenia datetime2
+    Name varchar(255) NOT NULL,
+    Surname varchar(255) NOT NULL,
+    IdNumber varchar(255) NOT NULL,
+    DateOfBirth datetime2 NOT NULL
 );
 
-CREATE TABLE Rodzaj_adresu (
+CREATE TABLE AddressType (
     Id int NOT NULL IDENTITY(1,1) PRIMARY KEY,
-    Nazwa varchar(255)
+    Name varchar(255) NOT NULL
 );
 
-CREATE TABLE Adresy (
+CREATE TABLE Address (
     Id int NOT NULL IDENTITY(1,1) PRIMARY KEY,
-    RodzajId int FOREIGN KEY REFERENCES Rodzaj_adresu(Id),
-    OsobaId int FOREIGN KEY REFERENCES Osoby(Id),
-    Ulica varchar(255),
-    Numer varchar(255),
-	Miasto varchar(255)
+    AddressTypeId int NOT NULL FOREIGN KEY REFERENCES AddressType(Id),
+    PersonId int NOT NULL FOREIGN KEY REFERENCES Person(Id),
+    Street varchar(255) NOT NULL,
+    Number varchar(255) NOT NULL,
+	City varchar(255) NOT NULL
 );
-
-INSERT INTO Rodzaj_adresu (Nazwa)
-VALUES ('Zameldowania');
-INSERT INTO Rodzaj_adresu (Nazwa)
-VALUES ('Zamieszkania');
-INSERT INTO Rodzaj_adresu (Nazwa)
-VALUES ('Korespondencyjny');
-
-INSERT INTO Osoby (Imie, Nazwisko)
-VALUES ('Patrycja', 'Gajewska');
-INSERT INTO Osoby (Imie, Nazwisko)
-VALUES ('Adam', 'Kowalski');
-
-INSERT INTO Adresy (RodzajId, OsobaId, Ulica)
-VALUES ('1', '2', 'UlicaA');
-
-SELECT o.[Id]
-      ,[Imie]
-      ,[Nazwisko]
-      ,[Pesel]
-      ,[Data_urodzenia]
-  FROM [dbo].[Osoby] AS o
-  INNER JOIN Adresy ON o.Id!=Adresy.OsobaId;
